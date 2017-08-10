@@ -94,9 +94,16 @@ public class WeatherAcyivity extends AppCompatActivity {
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
         }
+
+        //响应下拉刷新
         swipeRsfresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                SharedPreferences prefs= PreferenceManager.
+                        getDefaultSharedPreferences(WeatherAcyivity.this);
+                String weatherString=prefs.getString("weather",null);
+                Weather weather= Utility.handleWeatherResponse(weatherString);
+                String weatherId=weather.basic.weatherId;
                 requestWeather(weatherId);
             }
         });
@@ -132,8 +139,6 @@ public class WeatherAcyivity extends AppCompatActivity {
                     }
 
                 });
-                loadBingPic();
-
             }
 
             @Override
